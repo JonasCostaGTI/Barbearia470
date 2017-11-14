@@ -1,0 +1,11 @@
+SELECT   
+SUM(CASE WHEN totalVenda != '' THEN totalVenda ELSE 0 END) as somaTotal,
+SUM(CASE WHEN totalBebidas != '' THEN totalBebidas ELSE 0 END) as totalBebidas,
+SUM(CASE WHEN totalProdutos != '' THEN totalProdutos ELSE 0 END) as totalProdutos,
+SUM(CASE WHEN totalServico != '' THEN totalServico ELSE 0 END) as totalServicos,
+SUM(CASE WHEN valorOutros != '' THEN valorOutros ELSE 0 END) as totalOutros, 
+SUM(CASE WHEN pagamento = 'Dinheiro' THEN totalVenda ELSE 0 END) as totalDinheiro,
+SUM(CASE WHEN pagamento = 'Cartão' THEN totalVenda ELSE 0 END) as totalCartao, 
+count(*) as atendimentos
+FROM vendas 
+WHERE data BETWEEN '01/10/2017' AND '31/10/2017' AND idFuncionario = '27' ;

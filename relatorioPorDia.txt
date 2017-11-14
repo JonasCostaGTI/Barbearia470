@@ -1,0 +1,5 @@
+SELECT  sum(totalVenda) as soma, 
+SUM(CASE WHEN pagamento = 'Dinheiro' THEN totalVenda ELSE 0 END) as totalDinheiro,
+SUM(CASE WHEN pagamento = 'Cartão' THEN totalVenda ELSE 0 END) as totalCartao
+FROM vendas
+WHERE data  = '06/09/2017';

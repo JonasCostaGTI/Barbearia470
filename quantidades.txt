@@ -1,0 +1,16 @@
+SELECT  sum(totalVenda) as soma ,
+sum(totalBebidas) as totalBebidas, 
+sum(totalProdutos) as totalProdutos, 
+sum(totalServico) as totalServicos, 
+SUM(CASE WHEN pagamento = 'Dinheiro' THEN 1 ELSE 0 END) as dinheiro, 
+SUM(CASE WHEN pagamento = 'Cartão' THEN 1 ELSE 0 END) as cartao, 
+SUM(CASE WHEN nomeServico = 'Corte' THEN 1 ELSE 0 END) as cabelo, 
+SUM(CASE WHEN nomeServico = 'Barba' THEN 1 ELSE 0 END) as barba, 
+SUM(CASE WHEN nomeServico = 'Corte e Barba' THEN 1 ELSE 0 END) as cabeloBarba, 
+SUM(CASE WHEN pagamento = 'Dinheiro' THEN totalVenda ELSE 0 END) as totalDinheiro, 
+SUM(CASE WHEN pagamento = 'Cartão' THEN totalVenda ELSE 0 END) as totalCartao, 
+quantidadeBebidas, 
+quantidadeProdutos, 
+count(*) as atendimentos 
+FROM vendas 
+WHERE data  = '13/09/2017';
