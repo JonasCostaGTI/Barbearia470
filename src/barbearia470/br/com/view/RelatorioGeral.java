@@ -22,6 +22,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.activation.FileDataSource;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import org.jfree.chart.ChartFactory;
@@ -753,7 +755,15 @@ public class RelatorioGeral extends javax.swing.JFrame {
 
             //gera PDF
             geraPDF();
-            String pdfPath = "src/reports/report.pdf";
+             
+            String pdfPath;
+            String os = System.getProperty("os.name");
+            if(os.contains("Mac")){
+                pdfPath = "report1.pdf";
+            }else{
+                pdfPath = "D:/report1.pdf"; //win
+            }
+            
 
             Mail mail = new Mail(configuracaoEmail.getEmail(), configuracaoEmail.getSenha());
             String[] toArr = {configuracaoEmail.getEmail()};
@@ -776,9 +786,11 @@ public class RelatorioGeral extends javax.swing.JFrame {
             }
 
             try {
+               
                 mail.addAttachment(pdfPath);
-            } catch (Exception ex) {
                 
+            } catch (Exception ex) {
+
                 Logger.getLogger(RelatorioGeral.class.getName()).log(Level.SEVERE, null, ex);
             }
 
@@ -804,16 +816,22 @@ public class RelatorioGeral extends javax.swing.JFrame {
 
         try {
             Document document = new Document(PageSize.LEGAL.rotate());
-            PdfWriter.getInstance(document, new FileOutputStream("src/reports/report.pdf"));
-
+            
+            String os = System.getProperty("os.name");
+            if(os.contains("Mac")){
+                PdfWriter.getInstance(document, new FileOutputStream("report1.pdf"));//Mac
+            }else{
+                PdfWriter.getInstance(document, new FileOutputStream("D:/report1.pdf"));//win
+            }
+            
+            
+           
             SimpleDateFormat dataInicio = new SimpleDateFormat("dd/MM/yyyy");
             SimpleDateFormat dataFim = new SimpleDateFormat("dd/MM/yyyy");
 
             document.open();
 
-            Image img = Image.getInstance("src/icon/logo_barbearia_470.png");
-            img.scaleAbsolute(50f, 50f);
-            document.add(img);
+            
 
             Paragraph titulo = new Paragraph("Relatorio");
             titulo.setAlignment(Element.ALIGN_CENTER);
@@ -844,8 +862,6 @@ public class RelatorioGeral extends javax.swing.JFrame {
         } catch (DocumentException ex) {
             Logger.getLogger(RelatorioGeral.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(RelatorioGeral.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
             Logger.getLogger(RelatorioGeral.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -938,7 +954,7 @@ public class RelatorioGeral extends javax.swing.JFrame {
                 DateFormat formatUS = new SimpleDateFormat("yyyy-MM-dd");
                 Date date = formatUS.parse(rs.getString("data"));
 
-               //Depois formata data
+                //Depois formata data
                 DateFormat formatBR = new SimpleDateFormat("dd/MM/yyyy");
                 String dateFormated = formatBR.format(date);
 

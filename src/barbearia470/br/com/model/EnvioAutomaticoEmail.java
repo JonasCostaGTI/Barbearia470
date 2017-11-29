@@ -8,7 +8,6 @@ import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
-import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
@@ -95,7 +94,15 @@ public class EnvioAutomaticoEmail implements ActionListener {
         if (configuracaoEmail != null) {
             //gera PDF
             geraPDF();
-            String pdfPath = "src/reports/auto_report.pdf";
+            
+            String pdfPath;
+            String os = System.getProperty("os.name");
+            if(os.contains("Mac")){
+                pdfPath = "report1.pdf";
+            }else{
+                pdfPath = "D:/report1.pdf"; //win
+            }
+            
 
             Mail mail = new Mail(configuracaoEmail.getEmail(), configuracaoEmail.getSenha());
             String[] toArr = {configuracaoEmail.getEmail()};
@@ -133,13 +140,19 @@ public class EnvioAutomaticoEmail implements ActionListener {
 
         try {
             Document document = new Document(PageSize.LEGAL.rotate());
-            PdfWriter.getInstance(document, new FileOutputStream("src/reports/auto_report.pdf"));
-
+           
+            String os = System.getProperty("os.name");
+            if(os.contains("Mac")){
+                PdfWriter.getInstance(document, new FileOutputStream("report1.pdf"));//Mac
+            }else{
+                PdfWriter.getInstance(document, new FileOutputStream("D:/report1.pdf"));//win
+            }
+            
             document.open();
 
-            Image img = Image.getInstance("src/icon/logo_barbearia_470.png");
-            img.scaleAbsolute(50f, 50f);
-            document.add(img);
+//            Image img = Image.getInstance("src/icon/logo_barbearia_470.png");
+//            img.scaleAbsolute(50f, 50f);
+//            document.add(img);
 
             Paragraph titulo = new Paragraph("Relatorio Automático");
             titulo.setAlignment(Element.ALIGN_CENTER);
@@ -153,8 +166,6 @@ public class EnvioAutomaticoEmail implements ActionListener {
         } catch (DocumentException ex) {
             Logger.getLogger(RelatorioGeral.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(RelatorioGeral.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
             Logger.getLogger(RelatorioGeral.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

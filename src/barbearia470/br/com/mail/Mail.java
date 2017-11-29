@@ -126,6 +126,7 @@ public class Mail extends javax.mail.Authenticator {
     }
 
     public void addAttachment(String filename) throws Exception {
+      
         BodyPart messageBodyPart = new MimeBodyPart();
         DataSource source = new FileDataSource(filename);
         messageBodyPart.setDataHandler(new DataHandler(source));
@@ -200,5 +201,5 @@ public class Mail extends javax.mail.Authenticator {
         this._subject = _subject;
     }
 
-    // more of the getters and setters …..
+   
 }
